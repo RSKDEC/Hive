@@ -1,4 +1,4 @@
--- Pondlife: games, seats and move log.
+-- Oasis: games, seats and move log.
 -- All access goes through the Next.js server using the service-role key.
 -- RLS is enabled with no policies, so the public anon key cannot read or write these tables.
 
@@ -90,4 +90,4 @@ revoke all on function public.commit_game(text, integer, jsonb, jsonb) from publ
 grant execute on function public.commit_game(text, integer, jsonb, jsonb) to service_role;
 
 -- Optional housekeeping: remove games untouched for 90 days.
--- select cron.schedule('pondlife-cleanup', '0 4 * * *', $$delete from public.games where updated_at < now() - interval '90 days'$$);
+-- select cron.schedule('oasis-cleanup', '0 4 * * *', $$delete from public.games where updated_at < now() - interval '90 days'$$);

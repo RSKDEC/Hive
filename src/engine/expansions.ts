@@ -11,34 +11,34 @@ function gateOpen(b: Parameters<typeof height>[0], from: Hex, to: Hex): boolean 
   return Math.min(h1, h2) <= Math.max(height(b, from), height(b, to));
 }
 
-/** The piece that was lifted by an Otter last turn can't move or act this turn. */
+/** The piece that was lifted by an Ibis last turn can't move or act this turn. */
 export function isResting(s: GameState, pieceId: string): boolean {
   return s.last?.kind === 'throw' && s.last.pieceId === pieceId;
 }
 
-/** Can the top piece at `by` (owned by the player to move) use the Otter's lift? */
+/** Can the top piece at `by` (owned by the player to move) use the Ibis's lift? */
 export function hasLiftAbility(s: GameState, by: Hex): boolean {
   const p = topPiece(s.board, by);
   if (!p || p.color !== s.turn || height(s.board, by) !== 1 || isResting(s, p.id)) return false;
-  if (p.bug === 'otter') return true;
-  if (p.bug === 'newt') return neighbors(by).some((n) => topPiece(s.board, n)?.bug === 'otter');
+  if (p.bug === 'ibis') return true;
+  if (p.bug === 'chameleon') return neighbors(by).some((n) => topPiece(s.board, n)?.bug === 'ibis');
   return false;
 }
 
 /** Why the tile at `from` can't be lifted by `by`, or null. Assumes hasLiftAbility(by). */
 export function liftBlockReason(s: GameState, by: Hex, from: Hex): string | null {
   const b = s.board;
-  if (directionTo(by, from) === -1) return 'The Otter can only lift a tile right next to it.';
+  if (directionTo(by, from) === -1) return 'The Ibis can only lift a tile right next to it.';
   const t = topPiece(b, from);
   if (!t) return 'There is no tile there.';
   if (height(b, from) > 1) return 'Stacked tiles can’t be lifted.';
   if (s.last && s.last.kind !== 'place' && s.last.pieceId === t.id) return 'That tile just moved, so it can’t be lifted this turn.';
-  if (!canLift(b, from)) return 'Lifting that tile would split the pond.';
+  if (!canLift(b, from)) return 'Lifting that tile would split the oasis.';
   if (!gateOpen(liftFrom(b, from), from, by)) return 'That tile is wedged in too tightly to be lifted.';
   return null;
 }
 
-/** For an Otter-capable piece at `by`: map of liftable neighbour → empty cells it can be set down on. */
+/** For an Ibis-capable piece at `by`: map of liftable neighbour → empty cells it can be set down on. */
 export function getLiftOptions(s: GameState, by: Hex): Map<Hex, Hex[]> {
   const out = new Map<Hex, Hex[]>();
   if (!hasLiftAbility(s, by)) return out;

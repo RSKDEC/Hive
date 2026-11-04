@@ -8,11 +8,11 @@ import { findPiece } from './board';
 
 export type AiLevel = 'easy' | 'medium' | 'hard';
 
-const VALUE: Record<Bug, number> = { turtle: 2, snail: 5, frog: 3, crab: 2, minnow: 6, newt: 5, dragonfly: 4, otter: 4 };
+const VALUE: Record<Bug, number> = { pharaoh: 2, cat: 5, jerboa: 3, scorpion: 2, camel: 6, chameleon: 5, falcon: 4, ibis: 4 };
 const WIN = 1_000_000;
 
-function turtleHex(s: GameState, c: Color) {
-  return findPiece(s.board, `${c}-turtle-1`)?.hex ?? null;
+function pharaohHex(s: GameState, c: Color) {
+  return findPiece(s.board, `${c}-pharaoh-1`)?.hex ?? null;
 }
 
 /** Static evaluation from `me`'s point of view. */
@@ -25,27 +25,27 @@ export function evaluate(s: GameState, me: Color): number {
   }
   const mySur = surroundCount(s.board, me);
   const oppSur = surroundCount(s.board, opp);
-  // Pressure grows sharply as a Turtle nears full surround.
+  // Pressure grows sharply as a Pharaoh nears full surround.
   let score = 12 * oppSur * oppSur - 14 * mySur * mySur;
 
   const pinned = articulationPoints(s.board);
-  const myT = turtleHex(s, me);
-  const oppT = turtleHex(s, opp);
+  const myT = pharaohHex(s, me);
+  const oppT = pharaohHex(s, opp);
   for (const [h, st] of s.board) {
     const top = st[st.length - 1];
     const free = st.length > 1 || !pinned.has(h);
     const sign = top.color === me ? 1 : -1;
     if (free) score += sign * VALUE[top.bug];
-    // Pieces sitting next to the enemy Turtle are useful; Snails on top of it are excellent.
+    // Pieces sitting next to the enemy Pharaoh are useful; Cats on top of it are excellent.
     const enemyT = top.color === me ? oppT : myT;
     if (enemyT) {
-      if (h === enemyT && top.bug !== 'turtle') score += sign * 25;
+      if (h === enemyT && top.bug !== 'pharaoh') score += sign * 25;
       else if (distance(h, enemyT) === 1) score += sign * 3;
     }
-    // A covered Turtle can't escape.
-    if (st.length > 1 && st.some((p) => p.bug === 'turtle' && p.color !== top.color)) score += sign * 10;
+    // A covered Pharaoh can't escape.
+    if (st.length > 1 && st.some((p) => p.bug === 'pharaoh' && p.color !== top.color)) score += sign * 10;
   }
-  // Keep an escape square around our own Turtle.
+  // Keep an escape square around our own Pharaoh.
   if (myT && mySur < 6) {
     const freeAround = neighbors(myT).filter((n) => !s.board.has(n)).length;
     score += freeAround;
@@ -53,9 +53,9 @@ export function evaluate(s: GameState, me: Color): number {
   return score;
 }
 
-/** Cheap move-ordering hint: actions near the enemy Turtle first. */
+/** Cheap move-ordering hint: actions near the enemy Pharaoh first. */
 function orderActions(s: GameState, actions: Action[]): Action[] {
-  const oppT = turtleHex(s, other(s.turn));
+  const oppT = pharaohHex(s, other(s.turn));
   if (!oppT) return actions;
   const prio = (a: Action) => (a.type === 'pass' ? 99 : distance(a.to, oppT));
   return [...actions].sort((x, y) => prio(x) - prio(y));

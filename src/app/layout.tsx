@@ -7,18 +7,18 @@ const display = Fraunces({ subsets: ['latin'], variable: '--font-display-face', 
 const sans = Figtree({ subsets: ['latin'], variable: '--font-sans-face' });
 
 export const metadata: Metadata = {
-  title: 'Pondlife — a hex-tile strategy game',
-  description: 'Surround the other Turtle. A two-player tile strategy game to play with family online, on one device, or against the computer.',
-  applicationName: 'Pondlife',
-  appleWebApp: { capable: true, title: 'Pondlife', statusBarStyle: 'default' },
-  openGraph: { title: 'Pondlife', description: 'Join my game of Pondlife!', type: 'website' },
+  title: 'Oasis — a hex-tile strategy game',
+  description: 'Surround the other Pharaoh. A two-player tile strategy game to play with family online, on one device, or against the computer.',
+  applicationName: 'Oasis',
+  appleWebApp: { capable: true, title: 'Oasis', statusBarStyle: 'default' },
+  openGraph: { title: 'Oasis', description: 'Join my game of Oasis!', type: 'website' },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#FBF8F1',
+  themeColor: '#FBF6EC',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

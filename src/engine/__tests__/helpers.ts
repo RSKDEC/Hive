@@ -1,6 +1,6 @@
 import { createGame, FULL_CONFIG, type Board, type Bug, type Color, type GameConfig, type GameState, type Hex } from '..';
 
-const CODES: Record<string, Bug> = { T: 'turtle', S: 'snail', F: 'frog', C: 'crab', M: 'minnow', N: 'newt', D: 'dragonfly', O: 'otter' };
+const CODES: Record<string, Bug> = { T: 'pharaoh', S: 'cat', F: 'jerboa', C: 'scorpion', M: 'camel', N: 'chameleon', D: 'falcon', O: 'ibis' };
 
 /**
  * Builds a mid-game position. `cells` maps hex → stack codes bottom→top, e.g. { '0,0': 'wT', '1,0': 'bF wS' }.

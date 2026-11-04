@@ -11,7 +11,7 @@ function rng(seed: number) {
 
 describe('random play invariants', () => {
   for (const [label, config] of [['basic', BASIC_CONFIG], ['full', FULL_CONFIG]] as const) {
-    it(`keeps the pond connected and replays identically (${label})`, () => {
+    it(`keeps the oasis connected and replays identically (${label})`, () => {
       const rand = rng(label === 'basic' ? 7 : 42);
       for (let g = 0; g < 25; g++) {
         let s = createGame(config);
@@ -38,14 +38,14 @@ describe('random play invariants', () => {
 describe('serialization', () => {
   it('round-trips resignations', () => {
     let s = createGame();
-    s = applyAction(s, { type: 'place', bug: 'frog', to: '0,0' });
+    s = applyAction(s, { type: 'place', bug: 'jerboa', to: '0,0' });
     s = resign(s, 'b');
     const back = deserialize(serialize(s));
     expect(back.result).toEqual({ winner: 'w', reason: 'resign' });
   });
 
   it('rejects tampered histories', () => {
-    const bad = { v: 1 as const, config: BASIC_CONFIG, actions: [{ type: 'place' as const, bug: 'turtle' as const, to: '0,0' }] };
+    const bad = { v: 1 as const, config: BASIC_CONFIG, actions: [{ type: 'place' as const, bug: 'pharaoh' as const, to: '0,0' }] };
     expect(() => deserialize(bad)).toThrow();
   });
 
@@ -59,8 +59,8 @@ describe('serialization', () => {
 
   it('undo rewinds turns', () => {
     let s = createGame();
-    s = applyAction(s, { type: 'place', bug: 'frog', to: '0,0' });
-    s = applyAction(s, { type: 'place', bug: 'frog', to: '1,0' });
+    s = applyAction(s, { type: 'place', bug: 'jerboa', to: '0,0' });
+    s = applyAction(s, { type: 'place', bug: 'jerboa', to: '1,0' });
     const u = undoTurns(s, 1);
     expect(u.turn).toBe('b');
     expect(u.board.size).toBe(1);

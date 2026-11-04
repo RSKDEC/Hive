@@ -7,7 +7,7 @@ export interface LocalSave { game: SerializedGame; names: Record<Color, string>;
 export interface AiSave { game: SerializedGame; human: Color; level: AiLevel; savedAt: number }
 export interface OnlineEntry { id: string; opponent: string | null; you: Color | null; status: string; updatedAt: number }
 
-const KEYS = { local: 'pondlife.save.local', ai: 'pondlife.save.ai', online: 'pondlife.online' };
+const KEYS = { local: 'oasis.save.local', ai: 'oasis.save.ai', online: 'oasis.online' };
 
 function read<T>(key: string): T | null {
   try { const v = localStorage.getItem(key); return v ? (JSON.parse(v) as T) : null; } catch { return null; }

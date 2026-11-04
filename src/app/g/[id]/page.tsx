@@ -202,9 +202,9 @@ function JoinCard({ view, onJoined }: { view: GameView; onJoined: (g: GameView |
     if (!res.ok) setError(res.error ?? 'Could not join.');
   };
   return (
-    <SetupShell title={`${host?.nickname ?? 'Someone'} invited you to play`} subtitle={`A game of Pondlife · ${configLabel(view.config)} tiles`}>
+    <SetupShell title={`${host?.nickname ?? 'Someone'} invited you to play`} subtitle={`A game of Oasis · ${configLabel(view.config)} tiles`}>
       <div className="flex items-center gap-3 rounded-2xl bg-ivory/60 p-3">
-        <PieceIcon bug="turtle" color={seat} size={44} />
+        <PieceIcon bug="pharaoh" color={seat} size={44} />
         <p className="text-sm">You’ll play <b>{COLOR_NAMES[seat]}</b>{seat === 'w' ? ' and move first' : ''}. New to the game? The board shows every legal move for you.</p>
       </div>
       <label className="block">
@@ -223,12 +223,12 @@ function WaitingCard({ view }: { view: GameView }) {
   const [link, setLink] = useState('');
   useEffect(() => setLink(`${location.origin}/g/${view.id}`), [view.id]);
   const me = view.you!;
-  const message = `Come play Pondlife with me! ${link}`;
+  const message = `Come play Oasis with me! ${link}`;
   const copy = async () => {
     try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* select fallback below */ }
   };
   const share = async () => {
-    if (navigator.share) { try { await navigator.share({ title: 'Pondlife', text: 'Come play Pondlife with me!', url: link }); } catch { /* cancelled */ } }
+    if (navigator.share) { try { await navigator.share({ title: 'Oasis', text: 'Come play Oasis with me!', url: link }); } catch { /* cancelled */ } }
     else copy();
   };
   return (

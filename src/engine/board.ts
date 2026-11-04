@@ -29,7 +29,7 @@ export function controlledBy(b: Board, h: Hex): Color | null {
   return topPiece(b, h)?.color ?? null;
 }
 
-/** Empty cells touching the pond. */
+/** Empty cells touching the oasis. */
 export function perimeter(b: Board): Hex[] {
   const out = new Set<Hex>();
   for (const k of b.keys()) for (const n of neighbors(k)) if (!b.has(n)) out.add(n);

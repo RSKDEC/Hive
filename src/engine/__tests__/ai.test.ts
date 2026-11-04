@@ -23,7 +23,7 @@ describe('computer opponent', () => {
   });
 
   it('medium and hard block a one-move threat', () => {
-    // Black to move; White threatens Minnow 1,1 → 0,1 completing the surround of the black Turtle at 0,0.
+    // Black to move; White threatens Camel 1,1 → 0,1 completing the surround of the black Pharaoh at 0,0.
     const s = position({ '0,0': 'bT', '1,0': 'wT', '1,-1': 'wF', '0,-1': 'wF', '-1,0': 'wC', '-1,1': 'bC', '1,1': 'wM', '-1,2': 'bM' }, { turn: 'b' });
     for (const level of ['medium', 'hard'] as AiLevel[]) {
       const after = applyAction(s, chooseAction(s, level, { timeMs: 500 }));
@@ -36,7 +36,7 @@ describe('computer opponent', () => {
 });
 
 describe('articulation points agree with canLift', () => {
-  it('on a branching pond', () => {
+  it('on a branching oasis', () => {
     const s = position({ '0,0': 'wT', '1,0': 'bT', '2,0': 'bF', '-1,0': 'wF', '-1,1': 'wC', '1,-1': 'bC' });
     const ap = articulationPoints(s.board);
     for (const h of s.board.keys()) expect(ap.has(h)).toBe(!canLift(s.board, h));

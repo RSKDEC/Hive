@@ -38,8 +38,8 @@ export default function Home() {
 
       <div className="w-full max-w-md">
         <Logo />
-        <h1 className="mt-4 text-center font-display text-5xl font-semibold tracking-tight sm:text-6xl">Pondlife</h1>
-        <p className="mx-auto mt-2 max-w-xs text-center text-muted">A tile game of tactics for two. Surround the other Turtle before yours is caught.</p>
+        <h1 className="mt-4 text-center font-display text-5xl font-semibold tracking-tight sm:text-6xl">Oasis</h1>
+        <p className="mx-auto mt-2 max-w-xs text-center text-muted">A tile game of tactics for two. Surround the other Pharaoh before yours is caught.</p>
 
         <div className="card mt-8 p-5 sm:p-6">
           <label className="block">
@@ -93,7 +93,7 @@ export default function Home() {
 
 function Logo() {
   const tiles: Array<[Bug, Color, number, number]> = [
-    ['frog', 'b', -46, -14], ['turtle', 'w', 0, 12], ['crab', 'b', 46, -14], ['snail', 'w', -46, 38], ['minnow', 'b', 46, 38],
+    ['jerboa', 'b', -46, -14], ['pharaoh', 'w', 0, 12], ['scorpion', 'b', 46, -14], ['cat', 'w', -46, 38], ['camel', 'b', 46, 38],
   ];
   return (
     <div className="relative mx-auto h-40 w-56" aria-hidden>

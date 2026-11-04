@@ -5,35 +5,35 @@ import { slides, canClimbStep } from './sliding';
 
 /**
  * Destinations for a creature of type `bug` that has been lifted from `from`.
- * `b` is the board *without* the moving piece. One-pond and ownership checks happen elsewhere.
+ * `b` is the board *without* the moving piece. One-oasis and ownership checks happen elsewhere.
  */
 export function destinationsFor(b: Board, from: Hex, bug: Bug): Set<Hex> {
   switch (bug) {
-    case 'turtle':
-    case 'otter':
+    case 'pharaoh':
+    case 'ibis':
       return new Set(height(b, from) === 0 ? slides(b, from) : []);
-    case 'snail':
-      return snailMoves(b, from);
-    case 'frog':
-      return frogMoves(b, from);
-    case 'crab':
-      return crabMoves(b, from);
-    case 'minnow':
-      return minnowMoves(b, from);
-    case 'dragonfly':
-      return dragonflyMoves(b, from);
-    case 'newt':
-      return newtMoves(b, from);
+    case 'cat':
+      return catMoves(b, from);
+    case 'jerboa':
+      return jerboaMoves(b, from);
+    case 'scorpion':
+      return scorpionMoves(b, from);
+    case 'camel':
+      return camelMoves(b, from);
+    case 'falcon':
+      return falconMoves(b, from);
+    case 'chameleon':
+      return chameleonMoves(b, from);
   }
 }
 
-function snailMoves(b: Board, from: Hex): Set<Hex> {
+function catMoves(b: Board, from: Hex): Set<Hex> {
   const out = new Set<Hex>();
   for (let d = 0; d < 6; d++) if (canClimbStep(b, from, d)) out.add(neighbor(from, d));
   return out;
 }
 
-function frogMoves(b: Board, from: Hex): Set<Hex> {
+function jerboaMoves(b: Board, from: Hex): Set<Hex> {
   const out = new Set<Hex>();
   const [q, r] = parseHex(from);
   for (const [dq, dr] of DIRECTIONS) {
@@ -45,7 +45,7 @@ function frogMoves(b: Board, from: Hex): Set<Hex> {
   return out;
 }
 
-function crabMoves(b: Board, from: Hex): Set<Hex> {
+function scorpionMoves(b: Board, from: Hex): Set<Hex> {
   const out = new Set<Hex>();
   const walk = (cur: Hex, visited: Hex[]) => {
     if (visited.length === 4) { out.add(cur); return; }
@@ -55,7 +55,7 @@ function crabMoves(b: Board, from: Hex): Set<Hex> {
   return out;
 }
 
-function minnowMoves(b: Board, from: Hex): Set<Hex> {
+function camelMoves(b: Board, from: Hex): Set<Hex> {
   const seen = new Set<Hex>([from]);
   if (height(b, from) > 0) return new Set();
   const queue: Hex[] = [from];
@@ -67,7 +67,7 @@ function minnowMoves(b: Board, from: Hex): Set<Hex> {
   return seen;
 }
 
-function dragonflyMoves(b: Board, from: Hex): Set<Hex> {
+function falconMoves(b: Board, from: Hex): Set<Hex> {
   const out = new Set<Hex>();
   for (let d1 = 0; d1 < 6; d1++) {
     const a = neighbor(from, d1);
@@ -85,20 +85,20 @@ function dragonflyMoves(b: Board, from: Hex): Set<Hex> {
   return out;
 }
 
-/** Creature types a ground-level Newt at `from` can currently copy. */
-export function newtCopies(b: Board, from: Hex): Bug[] {
+/** Creature types a ground-level Chameleon at `from` can currently copy. */
+export function chameleonCopies(b: Board, from: Hex): Bug[] {
   const out = new Set<Bug>();
   for (const n of neighbors(from)) {
     const t = topPiece(b, n);
-    if (t && t.bug !== 'newt') out.add(t.bug);
+    if (t && t.bug !== 'chameleon') out.add(t.bug);
   }
   return [...out];
 }
 
-function newtMoves(b: Board, from: Hex): Set<Hex> {
-  // Up on the pond, a Newt acts as a Snail until it climbs down.
-  if (height(b, from) > 0) return snailMoves(b, from);
+function chameleonMoves(b: Board, from: Hex): Set<Hex> {
+  // Up on the oasis, a Chameleon acts as a Cat until it climbs down.
+  if (height(b, from) > 0) return catMoves(b, from);
   const out = new Set<Hex>();
-  for (const bug of newtCopies(b, from)) for (const d of destinationsFor(b, from, bug)) out.add(d);
+  for (const bug of chameleonCopies(b, from)) for (const d of destinationsFor(b, from, bug)) out.add(d);
   return out;
 }

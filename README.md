@@ -1,23 +1,23 @@
-# Pondlife
+# Oasis
 
 A two-player hex-tile strategy game for the family: play **online with a private link**, **pass-and-play on one device**, or **against the computer**. No accounts, no ads.
 
-Surround the other player's 🐢 Turtle on all six sides before they surround yours. There is no board. The tiles themselves make the playing area (the *pond*), and each creature moves in its own way.
+A desert-themed game: surround the rival Pharaoh on all six sides before yours is trapped. There is no board. The tiles themselves make the playing area (the *oasis*), and each creature moves in its own way.
 
-> Pondlife is an original game with its own name, theme and artwork. Its rules follow the well-known
+> Oasis is an original game with its own name, theme and artwork. Its rules follow the well-known
 > "surround the key piece" hex-tile design (rules and mechanics are not copyrightable). It does not use any
 > other game's name, characters, artwork or code. The rules engine was written independently from published rules.
 
 | Creature | Tiles | Movement |
 |---|---|---|
-| 🐢 Turtle | 1 | 1 space. Lose if it's surrounded. Must be placed by your 4th turn. |
-| 🐌 Snail | 2 | 1 space, and can climb on top of tiles (covered tiles are trapped). |
-| 🐸 Frog | 3 | Jumps in a straight line over one or more tiles. |
-| 🦀 Crab | 2 | Exactly 3 spaces around the edge. |
-| 🐟 Minnow | 3 | Any number of spaces around the edge. |
-| 🦎 Newt *(expansion)* | 1 | Copies the movement of the creatures it touches. |
-| Dragonfly *(expansion)* | 1 | 2 steps over the top of the pond, then 1 down. |
-| 🦦 Otter *(expansion)* | 1 | 1 space, or lifts an adjacent tile over itself. |
+| Pharaoh | 1 | 1 space. Lose if it's surrounded. Must be placed by your 4th turn. |
+| Cat | 2 | 1 space, and can climb on top of tiles (covered tiles are trapped). |
+| Jerboa | 3 | Hops in a straight line over one or more tiles. |
+| Scorpion | 2 | Exactly 3 spaces around the edge. |
+| Camel | 3 | Any number of spaces around the edge. |
+| Chameleon *(expansion)* | 1 | Copies the movement of the creatures it touches. |
+| Falcon *(expansion)* | 1 | Flies 2 steps over the top of the oasis, then lands. |
+| Ibis *(expansion)* | 1 | 1 space, or carries an adjacent tile over itself. |
 
 **Basic** uses the first five creatures (11 tiles each). **Full** adds all three expansions (14 tiles each), and each expansion can also be switched on or off on its own.
 
@@ -32,8 +32,9 @@ Surround the other player's 🐢 Turtle on all six sides before they surround yo
    ```
 2. Get the code and install dependencies:
    ```bash
-   git clone https://github.com/rskdec/hive.git pondlife
-   cd pondlife
+   git clone https://github.com/rskdec/hive.git oasis
+   cd oasis
+   git checkout pondlife-app   # until it is merged
    npm install
    ```
 3. Run it:
@@ -123,11 +124,11 @@ First time running browser tests on your Mac: `npx playwright install chromium`.
 src/engine/          Pure, deterministic rules engine (no React, no I/O)
   coordinates.ts     axial hex maths
   board.ts           stacks, lifting, perimeter
-  connectivity.ts    One Pond rule (connectivity + articulation points)
+  connectivity.ts    One Oasis rule (connectivity + articulation points)
   sliding.ts         freedom-to-move gates, height-aware climbing
-  movement.ts        each creature's movement (incl. Newt and Dragonfly)
-  expansions.ts      Otter lift rules, resting / just-moved restrictions
-  placement.ts       placement and opening rules, Turtle deadline
+  movement.ts        each creature's movement (incl. Chameleon and Falcon)
+  expansions.ts      Ibis lift rules, resting / just-moved restrictions
+  placement.ts       placement and opening rules, Pharaoh deadline
   winner.ts          surround detection
   game-state.ts      createGame, getLegalActions, getLegalMoves, validateAction, applyAction, …
   serialization.ts   save/replay, action parsing
@@ -150,8 +151,8 @@ same functions (`getLegalActions`, `getLegalMoves`, `getLegalPlacements`, `getLi
 
 ## Features
 
-- ✅ Complete rules: placement and opening restrictions (no Turtle first), Turtle-by-4th-turn, no moving before the
-  Turtle, One Pond connectivity (including stacks), freedom-to-move gates, height-aware climbing, covered tiles,
+- ✅ Complete rules: placement and opening restrictions (no Pharaoh first), Pharaoh-by-4th-turn, no moving before the
+  Pharaoh, One Oasis connectivity (including stacks), freedom-to-move gates, height-aware climbing, covered tiles,
   automatic pass, surround win, simultaneous-surround draw, resignation, agreed draws.
 - ✅ All 8 creatures including the three expansions, with Basic / Full presets and per-expansion toggles.
 - ✅ Private online games: invite link, WhatsApp/share/copy, automatic start, seat protection, spectators,
@@ -159,20 +160,20 @@ same functions (`getLegalActions`, `getLegalMoves`, `getLegalPlacements`, `getLi
 - ✅ Pass-and-play with automatic saving (works offline after the first visit thanks to the service worker).
 - ✅ Computer opponent: Easy, Medium, Hard (runs in a Web Worker so the board stays smooth).
 - ✅ SVG board with pan, pinch-zoom, wheel-zoom, double-tap / button recentre, stacked tiles with height badges,
-  animated placement and movement, last-move marker, legal-move highlights, two-step Otter lift with a chooser.
+  animated placement and movement, last-move marker, legal-move highlights, two-step Ibis lift with a chooser.
 - ✅ Beginner-friendly: hints, tap any tile to learn what it does, short explanations for rejected moves, a rules
-  guide with live movement demos, Turtle "danger" meter, family mode (bigger tiles, calmer animations).
+  guide with live movement demos, Pharaoh "danger" meter, family mode (bigger tiles, calmer animations).
 - ✅ Installable PWA, responsive from phones to desktops.
 - ✅ 64 unit/integration tests + 8 browser tests (complete local game, complete two-device online game with refresh,
   disconnect, spectator and rematch; take-back flow; computer opponent; mobile layout).
 
 ## Rule interpretations
 
-Where published rules leave room for interpretation, Pondlife does the following:
-- The Otter may not lift the tile its opponent **moved** on the previous turn (a freshly *placed* tile may be lifted).
-- A tile lifted by an Otter cannot move, or use the Otter's ability, on the next turn. A pass clears these effects.
-- Both players' first tile may not be the Turtle (tournament opening).
-- A Newt copies the creatures on top of adjacent stacks. On top of the pond it moves like a Snail.
+Where published rules leave room for interpretation, Oasis does the following:
+- The Ibis may not lift the tile its opponent **moved** on the previous turn (a freshly *placed* tile may be lifted).
+- A tile lifted by an Ibis cannot move, or use the Ibis's ability, on the next turn. A pass clears these effects.
+- Both players' first tile may not be the Pharaoh (tournament opening).
+- A Chameleon copies the creatures on top of adjacent stacks. On top of the oasis it moves like a Cat.
 
 ## Known limitations
 

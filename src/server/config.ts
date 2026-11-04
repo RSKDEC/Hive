@@ -13,16 +13,16 @@ export function memoryAllowed(): boolean {
   return process.env.NODE_ENV !== 'production' || process.env.ALLOW_MEMORY_STORE === '1';
 }
 
-const g = globalThis as unknown as { __pondlifeStore?: GameStore | null };
+const g = globalThis as unknown as { __oasisStore?: GameStore | null };
 
 export function getStore(): GameStore | null {
-  if (g.__pondlifeStore !== undefined) return g.__pondlifeStore;
+  if (g.__oasisStore !== undefined) return g.__oasisStore;
   const env = supabaseEnv();
-  g.__pondlifeStore = env ? new SupabaseStore(env.url, env.serviceKey) : memoryAllowed() ? new MemoryStore() : null;
-  return g.__pondlifeStore;
+  g.__oasisStore = env ? new SupabaseStore(env.url, env.serviceKey) : memoryAllowed() ? new MemoryStore() : null;
+  return g.__oasisStore;
 }
 
 /** For tests. */
 export function setStore(store: GameStore | null) {
-  g.__pondlifeStore = store;
+  g.__oasisStore = store;
 }

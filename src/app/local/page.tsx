@@ -42,8 +42,8 @@ export default function LocalPage() {
         ) : null}
         <Field label="Players">
           <div className="grid gap-2">
-            <label className="flex items-center gap-3"><span className="h-5 w-5 shrink-0 rounded-full border-2 border-[#B9A57F] bg-[#F4ECDD]" /><input className="field" placeholder="Sun (goes first)" value={names.w} maxLength={20} onChange={(e) => setNames({ ...names, w: e.target.value })} /></label>
-            <label className="flex items-center gap-3"><span className="h-5 w-5 shrink-0 rounded-full bg-[#34302C]" /><input className="field" placeholder="Moon" value={names.b} maxLength={20} onChange={(e) => setNames({ ...names, b: e.target.value })} /></label>
+            <label className="flex items-center gap-3"><span className="h-5 w-5 shrink-0 rounded-full border-2 border-[#B8975E] bg-[#F2E3C4]" /><input className="field" placeholder="Sun (goes first)" value={names.w} maxLength={20} onChange={(e) => setNames({ ...names, w: e.target.value })} /></label>
+            <label className="flex items-center gap-3"><span className="h-5 w-5 shrink-0 rounded-full bg-[#302C33]" /><input className="field" placeholder="Moon" value={names.b} maxLength={20} onChange={(e) => setNames({ ...names, b: e.target.value })} /></label>
           </div>
         </Field>
         <Field label="Tiles"><RulesetPicker value={config} onChange={setConfig} /></Field>

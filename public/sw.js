@@ -1,6 +1,6 @@
-// Pondlife offline cache: static assets cache-first, pages network-first with cached fallback.
+// Oasis offline cache: static assets cache-first, pages network-first with cached fallback.
 // API calls are never cached.
-const CACHE = 'pondlife-v1';
+const CACHE = 'oasis-v1';
 const SHELL = ['/', '/local', '/computer', '/rules'];
 
 self.addEventListener('install', (e) => {

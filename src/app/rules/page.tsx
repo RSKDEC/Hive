@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { RulesGuide } from '@/components/RulesGuide';
 
-export const metadata = { title: 'How to play — Pondlife' };
+export const metadata = { title: 'How to play — Oasis' };
 
 export default function RulesPage() {
   return (

@@ -9,7 +9,7 @@ export function flankHeights(b: Board, from: Hex, dir: number): [number, number]
 
 /**
  * Ground-level slide (Freedom to Move). The destination must be empty, exactly one of the two
- * flanking cells must be occupied: none would mean losing contact with the pond while sliding,
+ * flanking cells must be occupied: none would mean losing contact with the oasis while sliding,
  * both would mean the gap is too narrow to pass.
  * `b` must already have the moving piece lifted.
  */
@@ -31,7 +31,7 @@ export function slides(b: Board, from: Hex): Hex[] {
  * Height-aware step used by climbing creatures. A creature currently resting on a stack of
  * height `hFrom` (moving piece already lifted) may step in direction `dir` unless both flanking
  * stacks are taller than both the starting and destination stacks. A move entirely at ground
- * level additionally needs contact with the pond.
+ * level additionally needs contact with the oasis.
  */
 export function canClimbStep(b: Board, from: Hex, dir: number): boolean {
   const to = neighbor(from, dir);

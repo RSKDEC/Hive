@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #FBF8F1;
-  --color-ivory: #F3ECDE;
-  --color-line: #E4DACA;
+  --color-paper: #FBF6EC;
+  --color-ivory: #F3E8D2;
+  --color-line: #E6D8BE;
   --color-ink: #2B2825;
   --color-charcoal: #24211F;
   --color-muted: #82796C;
   --color-gold: #C9A24B;
   --color-moss: #5F7A4F;
   --color-terracotta: #B95E3B;
-  --color-teal: #4F8378;
+  --color-teal: #3E8E86;
+  --color-lapis: #2F5D8C;
   --font-display: var(--font-display-face), 'Iowan Old Style', Georgia, serif;
   --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --animate-rise: rise 0.22s cubic-bezier(.2,.8,.3,1);
@@ -41,12 +42,12 @@ body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; 
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Tabletop felt for the playing area */
+/* Desert sand for the playing area */
 .board-felt {
   background:
-    radial-gradient(1200px 700px at 50% 35%, rgba(255, 255, 255, .55), transparent 70%),
-    repeating-linear-gradient(45deg, rgba(120, 100, 70, .025) 0 2px, transparent 2px 6px),
-    linear-gradient(180deg, #EDE3CF, #E3D6BD);
+    radial-gradient(1100px 650px at 50% 30%, rgba(255, 250, 236, .6), transparent 70%),
+    repeating-radial-gradient(ellipse 160% 60% at 50% 120%, rgba(150, 110, 50, .045) 0 3px, transparent 3px 22px),
+    linear-gradient(180deg, #EEDDB8, #E2C892);
 }
 
 /* Legal-move markers */

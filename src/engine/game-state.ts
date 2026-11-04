@@ -3,7 +3,7 @@ import { BASIC_CONFIG, BUGS, bugsInPlay, other } from './pieces';
 import { liftFrom, topPiece } from './board';
 import { canLift } from './connectivity';
 import { destinationsFor } from './movement';
-import { getLegalPlacements, placementBlockReason, placementCells, turnNumber, turtlePlaced } from './placement';
+import { getLegalPlacements, placementBlockReason, placementCells, turnNumber, pharaohPlaced } from './placement';
 import { getLiftOptions, hasLiftAbility, isResting, liftBlockReason } from './expansions';
 import { checkSurround } from './winner';
 
@@ -28,11 +28,11 @@ export function moveBlockReason(s: GameState, from: Hex): string | null {
     if (st.some((p) => p.color === s.turn)) return 'That tile is trapped underneath — only the top tile of a stack can move.';
     return 'That tile belongs to the other player.';
   }
-  if (!turtlePlaced(s, s.turn)) {
-    return turnNumber(s) === 4 ? 'Your Turtle must be placed this turn.' : 'Place your Turtle before moving tiles.';
+  if (!pharaohPlaced(s, s.turn)) {
+    return turnNumber(s) === 4 ? 'Your Pharaoh must be placed this turn.' : 'Place your Pharaoh before moving tiles.';
   }
-  if (isResting(s, top.id)) return 'That tile was just lifted by an Otter and must rest this turn.';
-  if (!canLift(s.board, from)) return 'Moving that tile would split the pond (One Pond rule).';
+  if (isResting(s, top.id)) return 'That tile was just lifted by an Ibis and must rest this turn.';
+  if (!canLift(s.board, from)) return 'Moving that tile would split the oasis (One Oasis rule).';
   return null;
 }
 
@@ -61,7 +61,7 @@ export function getLegalActions(s: GameState): Action[] {
     if (placementBlockReason(s, bug)) continue;
     for (const to of cells) out.push({ type: 'place', bug, to });
   }
-  if (turtlePlaced(s, s.turn)) {
+  if (pharaohPlaced(s, s.turn)) {
     for (const [from, st] of s.board) {
       if (st[st.length - 1].color !== s.turn) continue;
       for (const to of getLegalMoves(s, from)) out.push({ type: 'move', from, to });
@@ -105,8 +105,8 @@ export function validateAction(s: GameState, a: Action): Validation {
       return { ok: true };
     }
     case 'throw': {
-      if (!turtlePlaced(s, s.turn)) return no('Place your Turtle before moving tiles.');
-      if (!hasLiftAbility(s, a.by)) return no('Only an Otter (or a Newt touching one) can lift tiles.');
+      if (!pharaohPlaced(s, s.turn)) return no('Place your Pharaoh before moving tiles.');
+      if (!hasLiftAbility(s, a.by)) return no('Only an Ibis (or a Chameleon touching one) can lift tiles.');
       const why = liftBlockReason(s, a.by, a.from);
       if (why) return no(why);
       const drops = getLiftOptions(s, a.by).get(a.from) ?? [];

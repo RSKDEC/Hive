@@ -1,13 +1,13 @@
 export type Color = 'w' | 'b';
 
-/** Creature types. The first five are the base set; newt, dragonfly and otter are expansions. */
-export type Bug = 'turtle' | 'snail' | 'frog' | 'crab' | 'minnow' | 'newt' | 'dragonfly' | 'otter';
+/** Creature types. The first five are the base set; chameleon, falcon and ibis are expansions. */
+export type Bug = 'pharaoh' | 'cat' | 'jerboa' | 'scorpion' | 'camel' | 'chameleon' | 'falcon' | 'ibis';
 
 /** Axial coordinate key "q,r". */
 export type Hex = string;
 
 export interface Piece {
-  id: string; // e.g. "w-frog-2"
+  id: string; // e.g. "w-jerboa-2"
   color: Color;
   bug: Bug;
 }
@@ -16,15 +16,15 @@ export interface Piece {
 export type Board = Map<Hex, Piece[]>;
 
 export interface GameConfig {
-  newt: boolean;
-  dragonfly: boolean;
-  otter: boolean;
+  chameleon: boolean;
+  falcon: boolean;
+  ibis: boolean;
 }
 
 export type Action =
   | { type: 'place'; bug: Bug; to: Hex }
   | { type: 'move'; from: Hex; to: Hex }
-  /** Otter (or a Newt copying one) at `by` lifts the tile at `from` over itself to `to`. */
+  /** Ibis (or a Chameleon copying one) at `by` lifts the tile at `from` over itself to `to`. */
   | { type: 'throw'; by: Hex; from: Hex; to: Hex }
   | { type: 'pass' };
 

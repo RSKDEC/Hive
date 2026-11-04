@@ -1,6 +1,6 @@
 'use client';
 
-const SECRET_KEY = 'pondlife.secret';
+const SECRET_KEY = 'oasis.secret';
 
 function randomSecret(): string {
   const bytes = new Uint8Array(32);
@@ -19,7 +19,7 @@ export function getSecret(): string {
     return s;
   } catch {
     // Private mode without storage: identity lasts for this tab only.
-    const w = window as unknown as { __pondlifeSecret?: string };
-    return (w.__pondlifeSecret ??= randomSecret());
+    const w = window as unknown as { __oasisSecret?: string };
+    return (w.__oasisSecret ??= randomSecret());
   }
 }

@@ -23,7 +23,7 @@ export interface BoardProps {
   interactive?: boolean;
   className?: string;
   label?: string;
-  /** Fit exactly these cells instead of the pond plus a one-cell margin (used by demos). */
+  /** Fit exactly these cells instead of the oasis plus a one-cell margin (used by demos). */
   frame?: Hex[];
 }
 
@@ -234,8 +234,8 @@ export function Board({
           const [x, y] = stackTopY(h);
           return (
             <g key={`lift-${h}`} transform={`translate(${x} ${y})`} data-lift={h} pointerEvents="none">
-              <polygon points={hexPoints(R - 6)} fill="rgba(79,131,120,0.18)" stroke="#4F8378" strokeWidth={4} strokeDasharray="2 7" strokeLinecap="round" />
-              <circle cx={R * 0.62} cy={-R * 0.55} r={10} fill="#4F8378" />
+              <polygon points={hexPoints(R - 6)} fill="rgba(62,142,134,0.2)" stroke="#3E8E86" strokeWidth={4} strokeDasharray="2 7" strokeLinecap="round" />
+              <circle cx={R * 0.62} cy={-R * 0.55} r={10} fill="#3E8E86" />
               <path d={`M${R * 0.62} ${-R * 0.55 + 5} v-9 m-4 4 l4 -4 l4 4`} stroke="#fff" strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </g>
           );
@@ -305,7 +305,7 @@ function Tile({ piece, x, y, covered, height, selected, lifting, last, uid, anim
     >
       <g filter={covered ? undefined : `url(#${uid}-shadow)`}>
         <polygon points={pts} transform="translate(0 7)" fill={t.side} />
-        <polygon points={pts} fill={`url(#${uid}-face-${piece.color})`} stroke={selected ? '#C9A24B' : lifting ? '#4F8378' : t.edge} strokeWidth={selected || lifting ? 6 : 2.5} strokeLinejoin="round" />
+        <polygon points={pts} fill={`url(#${uid}-face-${piece.color})`} stroke={selected ? '#C9A24B' : lifting ? '#3E8E86' : t.edge} strokeWidth={selected || lifting ? 6 : 2.5} strokeLinejoin="round" />
       </g>
       {piece.color === 'b' ? <polygon points={hexPoints(R - 10)} fill="none" stroke={t.edge} strokeWidth={1.6} pointerEvents="none" /> : (
         <polygon points={hexPoints(R - 9)} fill="none" stroke="#fff" strokeOpacity={0.6} strokeWidth={1.4} pointerEvents="none" />
@@ -314,8 +314,8 @@ function Tile({ piece, x, y, covered, height, selected, lifting, last, uid, anim
       {last && !selected ? <polygon points={hexPoints(R - 3)} fill="none" stroke="#C9A24B" strokeOpacity={0.75} strokeWidth={3} strokeDasharray="10 6" pointerEvents="none" /> : null}
       {height > 1 ? (
         <g transform={`translate(${R * 0.6} ${-R * 0.58})`} pointerEvents="none">
-          <circle r={11} fill="#2B2825" stroke="#F4ECDD" strokeWidth={2} />
-          <text textAnchor="middle" dominantBaseline="central" fontSize={13} fontWeight={700} fill="#F4ECDD">{height}</text>
+          <circle r={11} fill="#2B2825" stroke="#F2E3C4" strokeWidth={2} />
+          <text textAnchor="middle" dominantBaseline="central" fontSize={13} fontWeight={700} fill="#F2E3C4">{height}</text>
         </g>
       ) : null}
     </g>

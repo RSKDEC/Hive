@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
   applyUnchecked, BUGS, COLOR_NAMES, configLabel, createGame, describeAction, getLegalActions, getLegalMoves,
   getLegalPlacements, getLiftOptions, hasLiftAbility, moveBlockReason, other, placementBlockReason, topPiece,
-  turnNumber, turtlePlaced, type Action, type Bug, type Color, type GameState, type Hex,
+  turnNumber, pharaohPlaced, type Action, type Bug, type Color, type GameState, type Hex,
 } from '@/engine';
 import { useSelection } from '@/store/selection';
 import { useAnimationsOn, useSettings } from '@/store/settings';
@@ -68,7 +68,7 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
     if (!selection || !myTurn) return empty;
     if (selection.kind === 'hand') return { ...empty, targets: getLegalPlacements(state, selection.bug) };
     if (selection.kind === 'board') {
-      const lift = hasLiftAbility(state, selection.hex) && turtlePlaced(state, state.turn) ? [...getLiftOptions(state, selection.hex).keys()] : [];
+      const lift = hasLiftAbility(state, selection.hex) && pharaohPlaced(state, state.turn) ? [...getLiftOptions(state, selection.hex).keys()] : [];
       return { ...empty, selectedHex: selection.hex, targets: getLegalMoves(state, selection.hex), liftSources: lift };
     }
     return { ...empty, selectedHex: selection.by, liftFrom: selection.from, targets: getLiftOptions(state, selection.by).get(selection.from) ?? [] };
@@ -123,7 +123,7 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
     }
     const why = moveBlockReason(state, h);
     const moves = why ? [] : getLegalMoves(state, h);
-    const lifts = hasLiftAbility(state, h) && turtlePlaced(state, state.turn) ? getLiftOptions(state, h).size : 0;
+    const lifts = hasLiftAbility(state, h) && pharaohPlaced(state, state.turn) ? getLiftOptions(state, h).size : 0;
     select({ kind: 'board', hex: h });
     if (why) say(why);
     else if (!moves.length && !lifts) say(`This ${BUGS[p.bug].name} has nowhere to go right now.`);
@@ -141,12 +141,12 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
     resultText ??
     (controls.length === 1 && controls[0] === state.turn ? 'Your turn' : controls.length === 1 ? `${names[state.turn]}’s turn` : `${names[state.turn]}’s turn`);
 
-  const forced = !state.result && turnNumber(state) === 4 && !turtlePlaced(state, state.turn);
+  const forced = !state.result && turnNumber(state) === 4 && !pharaohPlaced(state, state.turn);
   const hint = settings.hints && myTurn && !selection
     ? forced
-      ? 'Your Turtle must be placed this turn.'
+      ? 'Your Pharaoh must be placed this turn.'
       : state.board.size === 0
-        ? 'Pick a creature from your tray to start the pond. (The Turtle can’t go first.)'
+        ? 'Pick a creature from your tray to start the oasis. (The Pharaoh can’t go first.)'
         : 'Tap a creature in your tray to place it, or one of yours on the board to move it.'
     : null;
 
@@ -154,7 +154,7 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
   const panelProps = (c: Color) => ({
     state, color: c, name: names[c], active: !state.result && state.turn === c,
     selectedBug: selection?.kind === 'hand' && state.turn === c ? selection.bug : null,
-    enabled: myTurn && state.turn === c, forcedTurtle: forced && state.turn === c, onPick: pickHand,
+    enabled: myTurn && state.turn === c, forcedPharaoh: forced && state.turn === c, onPick: pickHand,
     large: settings.familyMode, tag: ctl.tags?.[c],
   });
 
@@ -167,7 +167,7 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
         </Link>
         <div className="min-w-0 flex-1 text-center">
           <div className="truncate font-display text-lg font-semibold leading-tight" data-testid="status">
-            {!state.result && <span className={`mr-2 inline-block h-3 w-3 rounded-full align-middle ${state.turn === 'w' ? 'border border-[#B9A57F] bg-[#F4ECDD]' : 'bg-[#34302C]'}`} />}
+            {!state.result && <span className={`mr-2 inline-block h-3 w-3 rounded-full align-middle ${state.turn === 'w' ? 'border border-[#B8975E] bg-[#F2E3C4]' : 'bg-[#302C33]'}`} />}
             {status}
           </div>
           <div className="truncate text-xs text-muted">{configLabel(state.config)} · move {state.history.length + (state.result ? 0 : 1)}</div>
@@ -257,8 +257,8 @@ export function GameScreen({ ctl }: { ctl: GameController }) {
           <Celebration winner={state.result?.winner ?? null} animate={animate} />
           <h2 className="font-display text-3xl font-semibold">{resultText}</h2>
           <p className="mt-2 text-muted">
-            {state.result?.reason === 'surround' && state.result.winner !== 'draw' && `${names[other(state.result.winner as Color)]}’s Turtle was surrounded.`}
-            {state.result?.reason === 'surround' && state.result.winner === 'draw' && 'Both Turtles were surrounded at the same time.'}
+            {state.result?.reason === 'surround' && state.result.winner !== 'draw' && `${names[other(state.result.winner as Color)]}’s Pharaoh was surrounded.`}
+            {state.result?.reason === 'surround' && state.result.winner === 'draw' && 'Both Pharaohs were surrounded at the same time.'}
             {state.result?.reason === 'resign' && state.result.winner !== 'draw' && `${names[other(state.result.winner as Color)]} resigned.`}
             {state.result?.reason === 'agreement' && 'Both players agreed to a draw.'}
           </p>
@@ -317,9 +317,9 @@ function Celebration({ winner, animate }: { winner: Color | 'draw' | null; anima
   return (
     <div className="relative mx-auto mb-3 h-24 w-24">
       {winner === 'draw' ? (
-        <div className="flex h-full items-center justify-center gap-1"><PieceIcon bug="turtle" color="w" size={44} /><PieceIcon bug="turtle" color="b" size={44} /></div>
+        <div className="flex h-full items-center justify-center gap-1"><PieceIcon bug="pharaoh" color="w" size={44} /><PieceIcon bug="pharaoh" color="b" size={44} /></div>
       ) : (
-        <div className="flex h-full items-center justify-center"><PieceIcon bug="turtle" color={winner} size={84} /></div>
+        <div className="flex h-full items-center justify-center"><PieceIcon bug="pharaoh" color={winner} size={84} /></div>
       )}
       {bits.map((i) => (
         <span

@@ -16,7 +16,7 @@ export function isConnected(b: Board): boolean {
 }
 
 /**
- * Cells whose removal (of the whole ground cell) would split the pond — articulation points.
+ * Cells whose removal (of the whole ground cell) would split the oasis — articulation points.
  * Linear-time (Tarjan), used for fast "pinned" checks.
  */
 export function articulationPoints(b: Board): Set<Hex> {
@@ -52,7 +52,7 @@ export function articulationPoints(b: Board): Set<Hex> {
   return out;
 }
 
-/** One Pond rule: can the top piece at `h` be picked up without splitting the pond? */
+/** One Oasis rule: can the top piece at `h` be picked up without splitting the oasis? */
 export function canLift(b: Board, h: Hex): boolean {
   if (height(b, h) > 1) return true; // something stays behind underneath
   if (!b.has(h)) return false;

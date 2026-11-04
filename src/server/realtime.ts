@@ -8,8 +8,8 @@ export interface UpdateEvent {
 /** Topic name shared by server broadcasts and client subscriptions. */
 export const topicFor = (gameId: string) => `game-${gameId}`;
 
-const g = globalThis as unknown as { __pondlifeBus?: EventEmitter };
-export const memoryBus: EventEmitter = g.__pondlifeBus ?? (g.__pondlifeBus = new EventEmitter().setMaxListeners(0));
+const g = globalThis as unknown as { __oasisBus?: EventEmitter };
+export const memoryBus: EventEmitter = g.__oasisBus ?? (g.__oasisBus = new EventEmitter().setMaxListeners(0));
 
 /**
  * Tells connected clients that a game changed. Clients then fetch the authoritative state,

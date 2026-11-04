@@ -49,7 +49,7 @@ describe('seats and identity', () => {
     await expectError(svc.join(id, { nickname: 'Eve', secret: C }), 403);
     const view = await svc.view(id, C);
     expect(view.you).toBeNull();
-    await expectError(svc.act(id, C, { kind: 'action', revision: view.revision, action: { type: 'place', bug: 'frog', to: '0,0' } }), 403);
+    await expectError(svc.act(id, C, { kind: 'action', revision: view.revision, action: { type: 'place', bug: 'jerboa', to: '0,0' } }), 403);
     await expectError(svc.act(id, C, { kind: 'resign' }), 403);
   });
 
@@ -68,10 +68,10 @@ describe('seats and identity', () => {
 describe('moves', () => {
   it('enforces turn order and rules on the server', async () => {
     const { id } = await startGame();
-    await expectError(play(id, B, { type: 'place', bug: 'frog', to: '0,0' }), 409); // not black's turn
-    const illegal = await expectError(play(id, A, { type: 'place', bug: 'turtle', to: '0,0' }), 422);
+    await expectError(play(id, B, { type: 'place', bug: 'jerboa', to: '0,0' }), 409); // not black's turn
+    const illegal = await expectError(play(id, A, { type: 'place', bug: 'pharaoh', to: '0,0' }), 422);
     expect(illegal.message).toMatch(/first tile/);
-    const v = await play(id, A, { type: 'place', bug: 'frog', to: '0,0' });
+    const v = await play(id, A, { type: 'place', bug: 'jerboa', to: '0,0' });
     expect(v.turn).toBe('b');
     expect(v.revision).toBe(2);
     expect(store.moves.get(id)!.length).toBe(1);
@@ -87,8 +87,8 @@ describe('moves', () => {
     const { id } = await startGame();
     const v = await svc.view(id, A);
     const results = await Promise.allSettled([
-      svc.act(id, A, { kind: 'action', revision: v.revision, action: { type: 'place', bug: 'frog', to: '0,0' } }),
-      svc.act(id, A, { kind: 'action', revision: v.revision, action: { type: 'place', bug: 'snail', to: '0,0' } }),
+      svc.act(id, A, { kind: 'action', revision: v.revision, action: { type: 'place', bug: 'jerboa', to: '0,0' } }),
+      svc.act(id, A, { kind: 'action', revision: v.revision, action: { type: 'place', bug: 'cat', to: '0,0' } }),
     ]);
     expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
     expect((await svc.view(id, A)).actions).toHaveLength(1);
@@ -97,7 +97,7 @@ describe('moves', () => {
   it('a duplicate retry of the same move is idempotent', async () => {
     const { id } = await startGame();
     const v = await svc.view(id, A);
-    const req = { kind: 'action' as const, revision: v.revision, action: { type: 'place' as const, bug: 'frog' as const, to: '0,0' } };
+    const req = { kind: 'action' as const, revision: v.revision, action: { type: 'place' as const, bug: 'jerboa' as const, to: '0,0' } };
     await svc.act(id, A, req);
     const again = await svc.act(id, A, req);
     expect(again.actions).toHaveLength(1);
@@ -106,19 +106,19 @@ describe('moves', () => {
   it('a stale client gets a 409 with the current state to resynchronise', async () => {
     const { id } = await startGame();
     const stale = await svc.view(id, B);
-    await play(id, A, { type: 'place', bug: 'frog', to: '0,0' });
-    const err = await expectError(svc.act(id, B, { kind: 'action', revision: stale.revision, action: { type: 'place', bug: 'frog', to: '1,0' } }), 409);
+    await play(id, A, { type: 'place', bug: 'jerboa', to: '0,0' });
+    const err = await expectError(svc.act(id, B, { kind: 'action', revision: stale.revision, action: { type: 'place', bug: 'jerboa', to: '1,0' } }), 409);
     expect(err.view!.actions).toHaveLength(1);
     // After resync the same move succeeds.
-    expect((await play(id, B, { type: 'place', bug: 'frog', to: '1,0' })).actions).toHaveLength(2);
+    expect((await play(id, B, { type: 'place', bug: 'jerboa', to: '1,0' })).actions).toHaveLength(2);
   });
 });
 
 describe('offers, resignation and rematch', () => {
   it('undo requires the opponent’s acceptance', async () => {
     const { id } = await startGame();
-    await play(id, A, { type: 'place', bug: 'frog', to: '0,0' });
-    await play(id, B, { type: 'place', bug: 'frog', to: '1,0' });
+    await play(id, A, { type: 'place', bug: 'jerboa', to: '0,0' });
+    await play(id, B, { type: 'place', bug: 'jerboa', to: '1,0' });
     let v = await svc.act(id, A, { kind: 'offer', offer: 'undo' });
     expect(v.offer).toMatchObject({ kind: 'undo', by: 'w' });
     await expectError(svc.act(id, A, { kind: 'respond', accept: true }), 409); // can't accept your own request
@@ -129,7 +129,7 @@ describe('offers, resignation and rematch', () => {
 
   it('declined offers leave the game unchanged', async () => {
     const { id } = await startGame();
-    await play(id, A, { type: 'place', bug: 'frog', to: '0,0' });
+    await play(id, A, { type: 'place', bug: 'jerboa', to: '0,0' });
     await svc.act(id, B, { kind: 'offer', offer: 'draw' });
     const v = await svc.act(id, A, { kind: 'respond', accept: false });
     expect(v.offer).toBeNull();
@@ -142,7 +142,7 @@ describe('offers, resignation and rematch', () => {
     const v = await svc.act(id, B, { kind: 'respond', accept: true });
     expect(v.status).toBe('finished');
     expect(v.winner).toBe('draw');
-    await expectError(play(id, A, { type: 'place', bug: 'frog', to: '0,0' }), 409);
+    await expectError(play(id, A, { type: 'place', bug: 'jerboa', to: '0,0' }), 409);
 
     const g2 = await startGame();
     const r = await svc.act(g2.id, B, { kind: 'resign' });

@@ -3,7 +3,7 @@ import { ORIGIN, neighbors } from './coordinates';
 import { controlledBy, perimeter } from './board';
 
 export const turnNumber = (s: GameState): number => Math.floor(s.ply / 2) + 1; // 1-based, per player
-export const turtlePlaced = (s: GameState, c: Color): boolean => s.hands[c].turtle === 0;
+export const pharaohPlaced = (s: GameState, c: Color): boolean => s.hands[c].pharaoh === 0;
 
 function hasPieceOnBoard(b: Board, c: Color): boolean {
   for (const st of b.values()) if (st.some((p) => p.color === c)) return true;
@@ -33,8 +33,8 @@ export function placementBlockReason(s: GameState, bug: Bug): string | null {
   const c = s.turn;
   if (!(bug in s.hands[c]) || s.hands[c][bug] <= 0) return 'You have no more of those tiles.';
   const n = turnNumber(s);
-  if (bug === 'turtle' && n === 1) return 'The Turtle can’t be your very first tile.';
-  if (bug !== 'turtle' && n === 4 && !turtlePlaced(s, c)) return 'Your Turtle must be placed by your 4th turn — place it now.';
+  if (bug === 'pharaoh' && n === 1) return 'The Pharaoh can’t be your very first tile.';
+  if (bug !== 'pharaoh' && n === 4 && !pharaohPlaced(s, c)) return 'Your Pharaoh must be placed by your 4th turn — place it now.';
   return null;
 }
 

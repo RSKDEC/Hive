@@ -23,7 +23,7 @@ export const useSettings = create<Settings>()(
       setNickname: (nickname) => set({ nickname: nickname.slice(0, 20) }),
       set: (patch) => set(patch),
     }),
-    { name: 'pondlife.settings' },
+    { name: 'oasis.settings' },
   ),
 );
 

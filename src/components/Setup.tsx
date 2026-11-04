@@ -28,8 +28,8 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 }
 
 export function RulesetPicker({ value, onChange }: { value: GameConfig; onChange: (c: GameConfig) => void }) {
-  const isBasic = !value.newt && !value.dragonfly && !value.otter;
-  const isFull = value.newt && value.dragonfly && value.otter;
+  const isBasic = !value.chameleon && !value.falcon && !value.ibis;
+  const isFull = value.chameleon && value.falcon && value.ibis;
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-2">
@@ -43,7 +43,7 @@ export function RulesetPicker({ value, onChange }: { value: GameConfig; onChange
         </button>
       </div>
       <div className="flex flex-wrap gap-2">
-        {(['newt', 'dragonfly', 'otter'] as const).map((b) => (
+        {(['chameleon', 'falcon', 'ibis'] as const).map((b) => (
           <button key={b} type="button" className="chip flex items-center gap-2 py-1.5 pl-1.5" aria-pressed={value[b]} onClick={() => onChange({ ...value, [b]: !value[b] })} title={BUGS[b].short}>
             <PieceIcon bug={b} color="w" size={28} />
             {BUGS[b].name}

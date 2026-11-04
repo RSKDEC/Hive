@@ -25,7 +25,7 @@ export function MovementDemo({ bug }: { bug: Bug }) {
   const showingMove = step % 2 === 1;
   const action = demo.actions[Math.floor(step / 2)];
   const state = showingMove && action ? applyUnchecked(demo.state, action) : demo.state;
-  const targets = showingMove ? [] : bug === 'otter' && action?.type === 'throw'
+  const targets = showingMove ? [] : bug === 'ibis' && action?.type === 'throw'
     ? getLiftOptions(demo.state, demo.piece).get(action.from) ?? []
     : getLegalMoves(demo.state, demo.piece);
   return (
@@ -46,22 +46,22 @@ export function MovementDemo({ bug }: { bug: Bug }) {
 }
 
 export function RulesGuide({ config = FULL_CONFIG, compact }: { config?: GameConfig; compact?: boolean }) {
-  const bugs: Bug[] = [...BASE_BUGS, ...(['newt', 'dragonfly', 'otter'] as const).filter((b) => config[b] || !compact)];
+  const bugs: Bug[] = [...BASE_BUGS, ...(['chameleon', 'falcon', 'ibis'] as const).filter((b) => config[b] || !compact)];
   return (
     <div className="space-y-6 text-[15px] leading-relaxed">
       <section>
         <h3 className="mb-1 font-display text-xl font-semibold">The goal</h3>
-        <p>Surround the other player’s <b>Turtle</b> on all six sides. Tiles of <i>either</i> colour count. If both Turtles are surrounded by the same move, the game is a draw.</p>
+        <p>Surround the other player’s <b>Pharaoh</b> on all six sides. Tiles of <i>either</i> colour count. If both Pharaohs are surrounded by the same move, the game is a draw.</p>
       </section>
       <section>
         <h3 className="mb-1 font-display text-xl font-semibold">Your turn</h3>
-        <p>Sun always goes first. On each turn, do one thing: <b>place</b> a new tile from your tray, or <b>move</b> one of your tiles already in the pond. There is no board — the tiles themselves make the pond.</p>
+        <p>Sun always goes first. On each turn, do one thing: <b>place</b> a new tile from your tray, or <b>move</b> one of your tiles already in the oasis. There is no board — the tiles themselves make the oasis.</p>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li><b>Placing:</b> a new tile must touch at least one tile of your colour and must not touch any of the other colour. (The first two tiles of the game are the exception: the second one goes next to the first.) A stack counts as the colour of its top tile.</li>
-          <li><b>Turtle deadline:</b> the Turtle can’t be your first tile, but it must be placed by your 4th turn. Until it is, you can’t move any tiles.</li>
-          <li><b>One Pond:</b> all tiles must stay joined in one group, even while a tile is moving. A tile whose removal would split the pond can’t move.</li>
-          <li><b>Room to slide:</b> creatures that slide can’t squeeze through a gap between two tiles, and must stay in contact with the pond as they go.</li>
-          <li><b>Stacks:</b> Snails (and Newts copying them) can climb on top. A covered tile can’t move, and new tiles can’t be placed on top.</li>
+          <li><b>Pharaoh deadline:</b> the Pharaoh can’t be your first tile, but it must be placed by your 4th turn. Until it is, you can’t move any tiles.</li>
+          <li><b>One Oasis:</b> all tiles must stay joined in one group, even while a tile is moving. A tile whose removal would split the oasis can’t move.</li>
+          <li><b>Room to slide:</b> creatures that slide can’t squeeze through a gap between two tiles, and must stay in contact with the oasis as they go.</li>
+          <li><b>Stacks:</b> Cats (and Chameleons copying them) can climb on top. A covered tile can’t move, and new tiles can’t be placed on top.</li>
           <li>If you have no legal move, your turn is skipped automatically.</li>
         </ul>
       </section>
@@ -86,9 +86,9 @@ export function RulesGuide({ config = FULL_CONFIG, compact }: { config?: GameCon
       <section>
         <h3 className="mb-1 font-display text-xl font-semibold">Tips for new players</h3>
         <ul className="list-disc space-y-1.5 pl-5">
-          <li>Get your Turtle out early and keep an open space next to it.</li>
-          <li>Minnows are powerful: they can reach almost anywhere and pin enemy tiles in place.</li>
-          <li>A Snail sitting on the enemy Turtle stops it from moving.</li>
+          <li>Get your Pharaoh out early and keep an open space next to it.</li>
+          <li>Camels are powerful: they can reach almost anywhere and pin enemy tiles in place.</li>
+          <li>A Cat sitting on the enemy Pharaoh stops it from moving.</li>
           <li>Tap any tile to see what it does. Gold outlines show every legal spot.</li>
         </ul>
       </section>

@@ -11,7 +11,7 @@ export function isValidSecret(s: unknown): s is string {
 }
 
 export function hashSecret(secret: string): string {
-  const pepper = process.env.PLAYER_SECRET_PEPPER ?? 'pondlife';
+  const pepper = process.env.PLAYER_SECRET_PEPPER ?? 'oasis';
   return createHash('sha256').update(pepper + ':' + secret).digest('hex');
 }
 
